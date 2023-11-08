@@ -955,7 +955,10 @@ function run_ytdl_hook(url)
             local ytdl_cmd = mp.find_config_file(path .. exesuf)
             if ytdl_cmd then
                 msg.verbose("Found youtube-dl at: " .. ytdl_cmd)
-                ytdl.path = ytdl_cmd
+                ytdl.path = ytdl_cmd                
+                if mp.get_opt("ytdl_hook-ytdl_path") == nil then
+                    mp.commandv('no-osd', 'change-list', 'script-opts', 'append', 'ytdl_hook-ytdl_path=' .. ytdl.path)
+                end
                 command[1] = ytdl.path
                 result = exec(command)
                 break
@@ -967,7 +970,10 @@ function run_ytdl_hook(url)
                     msg.verbose("youtube-dl with path " .. path .. " not found in PATH or not enough permissions")
                 else
                     msg.verbose("Found youtube-dl with path " .. path .. " in PATH")
-                    ytdl.path = path
+                    ytdl.path = path                
+                    if mp.get_opt("ytdl_hook-ytdl_path") == nil then
+                        mp.commandv('no-osd', 'change-list', 'script-opts', 'append', 'ytdl_hook-ytdl_path=' .. ytdl.path)
+                    end
                     break
                 end
             end
